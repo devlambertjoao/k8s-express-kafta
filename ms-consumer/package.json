@@ -1,0 +1,12 @@
+{
+  "name": "ms-consumer",
+  "version": "1.0.0",
+  "description": "Consome fila do kafka",
+  "main": "index.js",
+  "repository": "https://github.com/devlambertjoao/k8s-express-kafta",
+  "author": "Joao Lambert",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
