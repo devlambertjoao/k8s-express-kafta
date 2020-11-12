@@ -24,7 +24,7 @@ spec:
         - name: KAFKA_BROKER
           value: kafka-cluster:9092
         - name: PORT
-          value: '8091'    
+          value: '8091'
         ports:
         - containerPort: 8091
 
