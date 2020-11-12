@@ -24,5 +24,6 @@ export default class Producer extends Vue {
   height: 100%;
   outline: none;
   padding: 4px;
+  margin: 16px;
 }
 </style>

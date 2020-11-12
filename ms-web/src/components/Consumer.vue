@@ -28,11 +28,12 @@ export default class Consumer extends Vue {
   max-height: 100%;
   height: 100%;
   overflow: auto;
-  padding-bottom: 8px;
+  padding-bottom: 16px;
+  margin-top: 16px;
 }
 
 .message {
-  margin-top: 8px;
+  margin: 8px 16px 0px 16px;
   padding: 8px;
   background-color: rgb(233,233,233);
 }
@@ -40,4 +41,5 @@ export default class Consumer extends Vue {
 .message:nth-child(1) {
   margin-top: 0px;
 }
+
 </style>
