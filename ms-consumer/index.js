@@ -2,7 +2,7 @@ const express = require('express');
 const { Kafka } = require('kafkajs');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT;
 
 const kafka = new Kafka({
     clientId: 'ms-consumer',
@@ -17,7 +17,7 @@ const kafka = new Kafka({
     authenticationTimeout: 2000,
 });
 
-const consumer = kafka.consumer({ groupId: 'mygroup' })
+const consumer = kafka.consumer({ groupId: 'mygroup', allowAutoTopicCreation: true })
  
 
 const run = async () => {

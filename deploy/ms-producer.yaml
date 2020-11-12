@@ -19,10 +19,12 @@ spec:
       hostname: ms-producer
       containers:
       - name: ms-producer
-        image: devlambertjoao/ms-producer:1.0.0
+        image: devlambertjoao/ms-producer:1.0.1
         env:
         - name: KAFKA_BROKER
-          value: kafka-cluster:9092        
+          value: kafka-cluster:9092
+        - name: PORT
+          value: '8090'
         ports:
         - containerPort: 8090
 

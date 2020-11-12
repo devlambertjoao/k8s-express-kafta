@@ -2,16 +2,16 @@ const express = require('express');
 const { Kafka } = require('kafkajs');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
 const kafka = new Kafka({
     clientId: 'ms-producer',
     brokers: [ process.env.KAFKA_BROKER ],
     requestTimeout: 30000,
     retry: {
-        initialRetryTime: 500,
+        initialRetryTime: 5000,
         maxRetryTime: 10000,
-        retries: 2,
+        retries: 20,
     },
     connectionTimeout: 2000,
     authenticationTimeout: 2000,

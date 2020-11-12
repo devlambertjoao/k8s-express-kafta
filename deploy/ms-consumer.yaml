@@ -19,10 +19,12 @@ spec:
       hostname: ms-consumer
       containers:
       - name: ms-consumer
-        image: devlambertjoao/ms-consumer:1.0.1
+        image: devlambertjoao/ms-consumer:1.0.2
         env:
         - name: KAFKA_BROKER
-          value: kafka-cluster:9092        
+          value: kafka-cluster:9092
+        - name: PORT
+          value: '8091'    
         ports:
         - containerPort: 8091
 
