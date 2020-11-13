@@ -8,23 +8,16 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component';
-import axios from 'axios';
+import { producerService } from '../services/producerService';
 
 export default class Producer extends Vue {
   message = '';
 
-sendMessage = async () => {
-  //Todo refatorar axios
-  let instance = axios.create({
-    headers: {
-      post: {
-        'Content-Type': 'application/json',
-      }
-    }
-  })
-  instance.post('http://192.168.49.2:30890', { msg: this.message })
-  .then(() => { this.message = '';})
-  .catch(err => console.error(err));
+sendMessage = () => {
+  producerService.sendMessage({ msg: this.message})
+    .then(() => {
+      this.message = '';
+    });
 }
 }
 </script>
