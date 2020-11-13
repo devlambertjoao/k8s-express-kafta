@@ -4,13 +4,13 @@
 </template>
 
 <script lang="ts">
-import Header from '@/components/Header.vue';
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue } from "vue-class-component";
+import Header from "./components/Header.vue";
 
 @Options({
   components: {
-    Header,
-  },
+    Header
+  }
 })
 export default class App extends Vue { }
 </script>
@@ -39,7 +39,5 @@ export default class App extends Vue { }
 
 body {
   margin: 0px;
-  min-width: 280px;
-  min-height: 350px;
 }
 </style>

@@ -19,7 +19,11 @@ spec:
       hostname: ms-consumer
       containers:
       - name: ms-consumer
-        image: devlambertjoao/ms-consumer:1.0.2
+        image: devlambertjoao/ms-consumer:1.0.6
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "500Mi"
         env:
         - name: KAFKA_BROKER
           value: kafka-cluster:9092

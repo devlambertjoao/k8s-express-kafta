@@ -1,8 +1,10 @@
 const express = require('express');
 const { Kafka } = require('kafkajs');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT;
+app.use(cors());
 
 const kafka = new Kafka({
     clientId: 'ms-producer',
@@ -31,10 +33,10 @@ const run = async () => {
 app.use(express.json());
 app.post('/', async (req, res) => {
     try {
-        if(req.body.message == null)
-            throw new Error('Field message is required');
+        if(req.body.msg == null)
+            throw new Error('Message cannot be null');
 
-    sendToTopic(req.body.message)
+    sendToTopic(req.body.msg);
 
         res.send();
         

@@ -6,9 +6,9 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
 import Consumer from '@/components/Consumer.vue';
 import Producer from '@/components/Producer.vue';
+import { Options, Vue } from 'vue-class-component';
 
 @Options({
   components: {

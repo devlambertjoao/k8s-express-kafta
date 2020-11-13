@@ -13,7 +13,17 @@
 import { Vue } from 'vue-class-component';
 
 export default class Consumer extends Vue {
-  items: string[] = ['teste', 'testando'];
+  items: string[] = [];
+
+  beforeMount() {
+    const ws = new WebSocket('ws://192.168.49.2:30891');
+    ws.onopen = event => {
+      console.log( 'conectado ao ws')
+    }
+    ws.onmessage = event => {
+      this.items.push(event.data)
+    }
+  }
 
   cleanList = () => {
     this.items.push('message');
