@@ -23,7 +23,7 @@ export default class Consumer extends Vue {
   }
 
   cleanList = () => {
-    this.items.push('message');
+    this.items = [];
   }
 }
 </script>
@@ -48,5 +48,4 @@ export default class Consumer extends Vue {
 .message:nth-child(1) {
   margin-top: 0px;
 }
-
 </style>
