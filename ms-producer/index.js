@@ -31,14 +31,14 @@ const run = async () => {
 
 
 app.use(express.json());
-app.post('/', async (req, res) => {
+app.post('/api/producer', async (req, res) => {
     try {
         if(req.body.msg == null)
             throw new Error('Message cannot be null');
 
-    sendToTopic(req.body.msg);
-
-        res.send();
+        await sendToTopic(req.body.msg);
+        
+        res.status(204).send();    
         
     } catch (err) {
         res.status(500).send({ error: 'Error on create message to send: ' + err.message })
