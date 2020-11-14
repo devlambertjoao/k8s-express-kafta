@@ -11,16 +11,13 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component';
+import { consumerWebSocketService } from '../services/consumerWebSocketService';
 
 export default class Consumer extends Vue {
   items: string[] = [];
 
   beforeMount() {
-    const ws = new WebSocket('ws://192.168.49.2:30891');
-    ws.onopen = event => {
-      console.log( 'conectado ao ws')
-    }
-    ws.onmessage = event => {
+    consumerWebSocketService.getWSInstance().onmessage = event => {
       this.items.push(event.data)
     }
   }

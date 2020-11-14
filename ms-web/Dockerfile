@@ -5,8 +5,9 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-COPY nginx_conf/nginx.production.conf /etc/nginx/conf.d
-COPY nginx_conf/nginx.conf /etc/nginx
-COPY dist /usr/share/nginx/html
+FROM nginx as production-stage
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build-stage /app/dist /usr/share/nginx/html
 
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

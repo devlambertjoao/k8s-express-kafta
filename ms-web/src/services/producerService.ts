@@ -2,7 +2,7 @@ import { BaseService } from "./baseService";
 
 class ProducerService extends BaseService {
     constructor() {
-        super(process.env.VUE_APP_MS_PRODUCER);
+        super('/api/producer');
     }
 
     public async sendMessage(data: MessageBody): Promise<MessageBody | undefined> {

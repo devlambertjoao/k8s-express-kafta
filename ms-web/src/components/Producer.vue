@@ -17,7 +17,7 @@ sendMessage = () => {
   producerService.sendMessage({ msg: this.message})
     .then(() => {
       this.message = '';
-    });
+  });
 }
 }
 </script>
