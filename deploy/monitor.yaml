@@ -1,0 +1,186 @@
+#APM SERVER START#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apm-server-config
+  labels:
+    k8s-app: apm-server
+data:
+  apm-server.yml: |-
+    apm-server:
+      host: "0.0.0.0:8200"
+      frontend:
+        enabled: false
+    setup.template.settings:
+      index:
+        number_of_shards: 1
+        codec: best_compression
+    setup.kibana:
+      host: "kibana"
+    output.elasticsearch:
+      hosts: ["elasticsearch"]
+      indices:
+        - index: "apm-%{[beat.version]}-sourcemap"
+          when.contains:
+            processor.event: "sourcemap"
+        - index: "apm-%{[beat.version]}-error-%{+yyyy.MM.dd}"
+          when.contains:
+            processor.event: "error"
+        - index: "apm-%{[beat.version]}-transaction-%{+yyyy.MM.dd}"
+          when.contains:
+            processor.event: "transaction"
+        - index: "apm-%{[beat.version]}-span-%{+yyyy.MM.dd}"
+          when.contains:
+            processor.event: "span"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apm-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apm-server
+  template:
+    metadata:
+      labels:
+        app: apm-server
+    spec:
+      containers:
+      - name: apm-server
+        image: docker.elastic.co/apm/apm-server:7.9.3
+        ports:
+        - containerPort: 8200
+          name: apm-port
+        volumeMounts:
+        - name: apm-server-config
+          mountPath: /usr/share/apm-server/apm-server.yml
+          readOnly: true
+          subPath: apm-server.yml
+      volumes:
+      - name: apm-server-config
+        configMap:
+          name: apm-server-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apm-server
+  labels:
+    app: apm-server
+spec:
+  ports:
+  - port: 8200
+    targetPort: 8200
+    name: http
+    nodePort: 31000
+  selector:
+    app: apm-server
+  type: NodePort
+#APM SERVER END#
+---
+#ELASTIC SEARCH START#
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+spec:
+  serviceName: "elasticsearch"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:6.6.1
+        env:
+        - name: discovery.type
+          value: single-node
+        ports:
+        - containerPort: 9200
+          name: client
+        - containerPort: 9300
+          name: nodes
+        volumeMounts:
+        - name: data
+          mountPath: /usr/share/elasticsearch/data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: elasticsearch
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  labels:
+    service: elasticsearch
+spec:
+  ports:
+  - port: 9200
+    name: client
+  - port: 9300
+    name: nodes
+  selector:
+    app: elasticsearch
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: elasticsearch
+  labels:
+    app: elasticsearch
+    stack: logging
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1G
+#ELASTIC SEARCH END#
+---
+#KIBANA START#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana-deployment
+  labels:
+    app: kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+      - name: kibana
+        image: docker.elastic.co/kibana/kibana:6.6.1
+        ports:
+        - containerPort: 5601
+          name: webinterface
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+  labels:
+    service: kibana
+spec:
+  type: NodePort
+  ports:
+  - port: 5601
+    nodePort: 30561
+    name: webinterface
+  selector:
+    app: kibana
+#KIBANA END#

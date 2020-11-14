@@ -4,9 +4,15 @@ const { Kafka } = require('kafkajs');
 const websocket = require('ws');
 const http = require('http');
 
+var apm = require('elastic-apm-node').start({
+  serviceName: 'ms-consumer',
+  serverUrl: process.env.AMP_SERVER
+});
+
 const app = express();
 app.use(cors());
 const port = process.env.PORT;
+
 
 //WebSocket
 const server = http.createServer(app);

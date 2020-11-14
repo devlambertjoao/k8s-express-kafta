@@ -19,7 +19,7 @@ spec:
       hostname: ms-producer
       containers:
       - name: ms-producer
-        image: devlambertjoao/ms-producer:1.1.2
+        image: devlambertjoao/ms-producer:1.1.9
         resources:
           limits:
             cpu: "500m"
@@ -29,6 +29,8 @@ spec:
           value: kafka-cluster:9092
         - name: PORT
           value: '8090'
+        - name: APM_SERVER
+          value: apm-server:8200
         ports:
         - containerPort: 8090
 
