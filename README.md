@@ -9,7 +9,7 @@
 
 ## Em deploy:  
 
-kubectl apply -f ms-zookeper-kafka.yaml
+kubectl apply -f zookeper-kafka.yaml
 kubectl apply -f ms-consumer.yaml
 kubectl apply -f ms-producer.yaml
 kubectl apply -f ms-web.yaml
