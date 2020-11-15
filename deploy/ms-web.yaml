@@ -19,7 +19,7 @@ spec:
       hostname: ms-web
       containers:
       - name: ms-web
-        image: devlambertjoao/ms-web:1.1.2
+        image: devlambertjoao/ms-web:1.1.3
         resources:
           limits:
             cpu: "500m"

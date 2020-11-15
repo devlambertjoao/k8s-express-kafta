@@ -2,7 +2,7 @@ import BaseWebSocketService from "./baseWebSocketService";
 
 class ConsumerWebSocketService extends BaseWebSocketService {
     constructor() {
-        super('api/consumer');
+        super('api/consumer/ws');
     }
 }
 

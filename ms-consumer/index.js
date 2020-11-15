@@ -15,7 +15,7 @@ const port = process.env.PORT;
 
 //WebSocket
 const server = http.createServer(app);
-const wss = new websocket.Server({ server: server, path: '/api/consumer' });
+const wss = new websocket.Server({ server: server, path: '/api/consumer/ws' });
 let wsService;
 
 const kafka = new Kafka({
