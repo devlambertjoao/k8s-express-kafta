@@ -19,7 +19,7 @@ spec:
       hostname: ms-consumer
       containers:
       - name: ms-consumer
-        image: devlambertjoao/ms-consumer:1.0.6
+        image: devlambertjoao/ms-consumer:1.0.9
         resources:
           limits:
             cpu: "500m"

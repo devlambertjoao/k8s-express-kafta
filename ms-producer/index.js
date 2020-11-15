@@ -1,15 +1,15 @@
+const apm = require('elastic-apm-node').start({
+    serviceName: 'Producer',
+    serverUrl: `http://${process.env.APM_SERVER || '192.168.49.2:31000'}`,
+    logLevel: 'debug'
+});
+
 const express = require('express');
 const { Kafka } = require('kafkajs');
 const cors = require('cors');
-const apm = require('elastic-apm-node');
-
-apm.start({
-    serviceName: 'Producer',
-    serverUrl: `http://${process.env.APM_SERVER}`
-});
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 app.use(cors());
 
 const kafka = new Kafka({
@@ -35,44 +35,42 @@ const run = async () => {
     });
 }
 
-
 app.use(express.json());
 app.post('/api/producer', async (req, res) => {
-    console.log(`${req.method}: ${req.url}`);
-    apm.setTransactionName(`${req.method}: ${req.url}`);
+    const trans = apm.startTransaction(`${req.method}: ${req.url}`);
+    const span = apm.startSpan(`${req.method}: ${req.url}`);
     try {
         if(req.body.msg == null)
             throw new Error('Message cannot be null');
 
         await sendToTopic(req.body.msg);
-        res.status(204).send();    
-        
+        trans.result = 'sucess';
+        res.status(204).send();
     } catch (err) {
         apm.captureError(err);
+        trans.result = 'error';
         res.status(500).send({ error: 'Error on create message to send: ' + err.message })
+    } finally {
+        trans.end();
+        span.end();
     }
 });
 
 const sendToTopic = async (obj) => {
     try {
-        apm.setTransactionName('Trying to send a message to topic');
         await producer.send({
             topic: 'mytopic',
             messages: [
                 { value : obj }
             ]
         });
-        apm.setTransactionName('sucessfully send to topic');
-
-        console.log('sucessfully send to topic')
     } catch (err) {
-        apm.captureError(err);
-        console.error('Error on send to topic: ', err.message)
+        console.error(err);
     }
 }
 
 app.listen(port, () => {
-  console.log(`Producer microservice listening at http://localhost:${port}`)
+  console.log(`Producer microservice listening at ${port}`);
 });
 
-run().catch(console.error)
+run().catch(console.error);

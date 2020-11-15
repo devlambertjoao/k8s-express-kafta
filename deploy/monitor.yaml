@@ -16,7 +16,8 @@ data:
         number_of_shards: 1
         codec: best_compression
     setup.kibana:
-      host: "kibana"
+      host: "kibana:5601"
+      enabled: true
     output.elasticsearch:
       hosts: ["elasticsearch"]
       indices:
@@ -142,7 +143,7 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 1G
+      storage: 5G
 #ELASTIC SEARCH END#
 ---
 #KIBANA START#

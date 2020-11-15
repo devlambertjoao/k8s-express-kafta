@@ -19,7 +19,7 @@ spec:
       hostname: ms-producer
       containers:
       - name: ms-producer
-        image: devlambertjoao/ms-producer:1.1.9
+        image: devlambertjoao/ms-producer:1.1.14
         resources:
           limits:
             cpu: "500m"
