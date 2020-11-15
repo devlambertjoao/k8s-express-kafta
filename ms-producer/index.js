@@ -1,7 +1,6 @@
 const apm = require('elastic-apm-node').start({
     serviceName: 'Producer',
-    serverUrl: `http://${process.env.APM_SERVER || '192.168.49.2:31000'}`,
-    logLevel: 'debug'
+    serverUrl: `http://${process.env.APM_SERVER || '192.168.49.2:31000'}`
 });
 
 const express = require('express');
@@ -37,23 +36,16 @@ const run = async () => {
 
 app.use(express.json());
 app.post('/api/producer', async (req, res) => {
-    const trans = apm.startTransaction(`${req.method}: ${req.url}`);
-    const span = apm.startSpan(`${req.method}: ${req.url}`);
     try {
         if(req.body.msg == null)
             throw new Error('Message cannot be null');
 
         await sendToTopic(req.body.msg);
-        trans.result = 'sucess';
         res.status(204).send();
     } catch (err) {
         apm.captureError(err);
-        trans.result = 'error';
         res.status(500).send({ error: 'Error on create message to send: ' + err.message })
-    } finally {
-        trans.end();
-        span.end();
-    }
+    } 
 });
 
 const sendToTopic = async (obj) => {

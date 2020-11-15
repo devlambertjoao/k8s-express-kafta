@@ -1,18 +1,17 @@
+var apm = require('elastic-apm-node').start({
+  serviceName: 'ms-consumer',
+  serverUrl: process.env.AMP_SERVER
+});
+
 const express = require('express');
 const cors = require('cors');
 const { Kafka } = require('kafkajs');
 const websocket = require('ws');
 const http = require('http');
 
-var apm = require('elastic-apm-node').start({
-  serviceName: 'ms-consumer',
-  serverUrl: process.env.AMP_SERVER
-});
-
 const app = express();
 app.use(cors());
 const port = process.env.PORT;
-
 
 //WebSocket
 const server = http.createServer(app);
@@ -64,4 +63,4 @@ server.listen(port, () => {
   console.log(`Server started on port ${server.address().port}`);
 });
 
-run().catch(console.error)
+run().catch(err => { apm.captureError(err)});
