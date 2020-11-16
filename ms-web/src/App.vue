@@ -4,6 +4,7 @@
 </template>
 
 <script lang="ts">
+import { onBeforeMount } from "vue";
 import { Options, Vue } from "vue-class-component";
 import Header from "./components/Header.vue";
 

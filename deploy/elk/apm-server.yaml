@@ -10,13 +10,18 @@ data:
       host: "0.0.0.0:8200"
       frontend:
         enabled: false
+      rum:
+        enabled: true
+        source_mapping:
+          enabled: true
+        allow_headers: ["Access-Control-Allow-Headers", "Content-Type", "Content-Encoding", "Accept"]
+      kibana:
+        enabled: true
+        host: "kibana"
     setup.template.settings:
       index:
         number_of_shards: 1
         codec: best_compression
-    setup.kibana:
-      host: "kibana"
-      # host: "< kibana endpoint >"
     output.elasticsearch:
       hosts: ["elasticsearch"]
       # hosts: ["< elasticsearch endpoint >"]

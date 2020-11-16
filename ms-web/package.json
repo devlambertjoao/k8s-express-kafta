@@ -7,7 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@types/node": "^14.14.7",
+    "@elastic/apm-rum": "^5.6.2",
     "axios": "^0.21.0",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",

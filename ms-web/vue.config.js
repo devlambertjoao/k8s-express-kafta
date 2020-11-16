@@ -9,6 +9,10 @@ module.exports = {
         '^/api/consumer': {
             target: 'ws://192.168.49.2:30891',
             ws: true,
+        },        
+        '^/apmserver': {
+          target: 'http://192.168.49.2:31000/',
+          pathRewrite: {'^/apmserver' : ''}
         },
       }
     }

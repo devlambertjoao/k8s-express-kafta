@@ -1,6 +1,6 @@
 var apm = require('elastic-apm-node').start({
-  serviceName: 'ms-consumer',
-  serverUrl: process.env.AMP_SERVER
+  serviceName: 'Consumer',
+  serverUrl: `http://${process.env.APM_SERVER || '192.168.49.2:31000'}`
 });
 
 const express = require('express');
@@ -46,15 +46,18 @@ const run = async () => {
 
     await consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
+        const transaction = apm.startTransaction('WS ');
         console.log({
           partition,
           offset: message.offset,
           value: message.value.toString(),
-        })
+        });
 
         if(wsService != null) {
           wsService.send(message.value.toString());
         }
+
+        transaction.end();
       },
     })
 }
