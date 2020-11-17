@@ -11,8 +11,8 @@ module.exports = {
             ws: true,
         },        
         '^/apmserver': {
-          target: 'http://192.168.49.2:31000/',
-          pathRewrite: {'^/apmserver' : ''}
+          target: 'http://192.168.49.2:31000',
+          pathRewrite: {'^/apmserver' : '/'}
         },
       }
     }

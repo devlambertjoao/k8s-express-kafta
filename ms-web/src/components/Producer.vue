@@ -9,7 +9,6 @@
 <script lang="ts">
 import { Vue } from 'vue-class-component';
 import { producerService } from '../services/producerService';
-import apmAgent from '../utils/apmAgent';
 
 export default class Producer extends Vue {
   message = '';
@@ -20,9 +19,7 @@ export default class Producer extends Vue {
       .then(() => {
         this.message = '';
       });
-    } else {
-      apmAgent.captureError('User trying to send empty string');
-    }
+    } 
   }
 }
 </script>
